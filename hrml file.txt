@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4 col-sm-4">
+    <div class="card shadow">
+      <div class="card-header">
+        <h3 class="text text-center">
+          Take home your
+          <!-- interpolate the pet type value here  -->
+          {{ petType }}
+        </h3>
+      </div>
+      <div class="card-body">
+        <!-- Write the code to implement petBookForm here -->
+        <form [formGroup]="petBookForm" (ngSubmit)="bookPet()">
+          <div class="form-group">
+            <label for="uname">Customer Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="userName"
+              id="uname"
+            />
+            <div id="nameError" *ngIf="userName.invalid && userName.dirty">
+              <span class="text-danger" *ngIf="userName.errors?.required">
+                Field Required
+              </span>
+              <span
+                class="text-danger"
+                *ngIf="userName.errors?.pattern && !userName.errors?.required"
+              >
+                Username should have only alphabets
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact">Customer contact number:</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="contactNumber"
+              id="contact"
+            />
+            <div
+              id="contactNumberError"
+              *ngIf="contactNumber.invalid && contactNumber.dirty"
+            >
+              <span class="text-danger" *ngIf="contactNumber.errors?.required">
+                Field Required
+              </span>
+              <span
+                class="text-danger"
+                *ngIf="
+                  contactNumber.errors?.pattern &&
+                  !contactNumber.errors?.required
+                "
+              >
+                Contact number should be of 10 digits
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pet">Pet breed:</label>
+            <select class="form-control" id="pet" formControlName="petBreed">
+              <option value="">Select your pet</option>
+              <option *ngFor="let pet of petArray" [value]="pet.petBreed">
+                {{ pet.petBreed }}
+              </option>
+            </select>
+            <div id="petBreedError" *ngIf="petBreed.invalid && petBreed.dirty">
+              <span class="text-danger" *ngIf="petBreed.errors?.required">
+                Please select atleast one pet breed
+              </span>
+              <span
+                class="text-danger"
+                *ngIf="
+                  petBreed.errors?.stockError && !petBreed.errors?.required
+                "
+              >
+                {{ petBreed.errors.stockError.message }}
+              </span>
+            </div>
+            <div
+              id="petBreedSuccess"
+              *ngIf="!petBreed.errors?.stockError && !petBreed.errors?.required"
+            >
+              <span class="text-primary">
+                {{ petBreedData }} cost {{ petCost }} and is available
+              </span>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!petBookForm.valid"
+          >
+            Book
+          </button>
+        </form>
+        <!--Write the code to render the success message here -->
+        <div id="successMessage" class="text-success">
+          {{ successMessage }}
+        </div>
+        <div id="errorMessage" class="text-danger">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
